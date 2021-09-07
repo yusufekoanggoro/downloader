@@ -24,8 +24,8 @@ class Youtube {
     }
     const { title } = videoInfo.data;
     const stream = await helper.getStream(url, res);
-    res.setHeader('Content-disposition', 'attachment; filename=' + title + ' by YUJA.mp3');
-    res.setHeader('Content-type', 'audio/mpeg');
+    res.setHeader('Content-Disposition', 'attachment; filename=' + title + ' by YUJA.mp3');
+    res.setHeader('Content-Type', 'audio/mpeg');
     return await helper.convertToMp3(stream, title, res);
   }
 }
