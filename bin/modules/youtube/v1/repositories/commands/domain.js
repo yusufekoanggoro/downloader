@@ -4,9 +4,9 @@ const helper = require('../../utils/helpers');
 
 class Youtube {
   async videoInfo (payload) {
-    const URL = payload.url;
     try {
-      const info = await ytdl.getBasicInfo(URL);
+      const { url } = payload;
+      const info = await ytdl.getBasicInfo(url);
       return wrapper.data({
         title: info.videoDetails.title,
         author: info.videoDetails.author.name
@@ -17,7 +17,12 @@ class Youtube {
   }
 
   async download (payload, res) {
-    const { url, title } = payload;
+    const { url } = payload;
+    const videoInfo = await this.videoInfo(payload);
+    if (videoInfo.err) {
+      return wrapper.error({}, videoInfo.message, 404);
+    }
+    const { title } = videoInfo.data;
     const stream = await helper.getStream(url, res);
     res.setHeader('Content-disposition', 'attachment; filename=' + title + ' by YUJA.mp3');
     res.setHeader('Content-type', 'audio/mpeg');

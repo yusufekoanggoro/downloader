@@ -6,8 +6,8 @@ const commandModel = require('../repositories/commands/command_modal');
 const validator = require('../utils/validator');
 
 const videoInfo = async (req, res) => {
-  const payload = req.body;
-  const validatePayload = validator.isValidPayload(payload, commandModel.checkURL);
+  const payload = req.query;
+  const validatePayload = validator.isValidPayload(payload, commandModel.videoInfo);
   const postRequest = async (result) => {
     if (result.err) {
       return result;
@@ -19,18 +19,14 @@ const videoInfo = async (req, res) => {
     if (result.err) {
       wrapper.response(res, 'fail', result, result.message);
     } else {
-      wrapper.response(res, 'success', result, 'Convert Success', http.OK);
+      wrapper.response(res, 'success', result, 'success video info', http.OK);
     }
   };
   sendResponse(await postRequest(validatePayload));
 };
 
 const download = async (req, res) => {
-  const { body, query } = req;
-  const payload = {
-    ...body,
-    ...query
-  };
+  const payload = req.query;
   const validatePayload = validator.isValidPayload(payload, commandModel.download);
   const postRequest = async (result) => {
     if (result.err) {
