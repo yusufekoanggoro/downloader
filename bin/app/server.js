@@ -31,14 +31,6 @@ function AppServer () {
   */
   this.server.get('/downloader/youtube/v1/video-info', basicAuth.isAuthenticated, youtubeHandler.videoInfo);
   this.server.get('/downloader/youtube/v1/download', basicAuth.isAuthenticated, youtubeHandler.download);
-
-  process.on('SIGINT', () => {
-    // this is only called on ctrl+c, not restart
-    process.kill(process.pid, 'SIGINT');
-  });
-  process.once('SIGUSR2', () => {
-    process.kill(process.pid, 'SIGUSR2');
-  });
 }
 
 module.exports = AppServer;
