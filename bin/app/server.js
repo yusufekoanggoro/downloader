@@ -29,8 +29,8 @@ function AppServer () {
         Add new route
     ====================
   */
-  this.server.get('/downloader/youtube/v1/video-info', youtubeHandler.videoInfo);
-  this.server.get('/downloader/youtube/v1/download', youtubeHandler.download);
+  this.server.get('/downloader/youtube/v1/video-info', basicAuth.isAuthenticated, youtubeHandler.videoInfo);
+  this.server.get('/downloader/youtube/v1/download', basicAuth.isAuthenticated, youtubeHandler.download);
 
   process.on('SIGINT', () => {
     // this is only called on ctrl+c, not restart
