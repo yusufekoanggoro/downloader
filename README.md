@@ -1,6 +1,6 @@
 ## Downloader
 
-[![forthebadge](https://forthebadge.com/images/badges/made-with-julia.svg)](https://forthebadge.com) 
+[![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com) 
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/open-source.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/powered-by-coffee.svg)](https://forthebadge.com)
@@ -13,7 +13,7 @@ What things you need to install the software and how to install them
 
 ```
 Give examples
-Node.js
+Node.js version v14.17.5+ (https://nodejs.org/)
 Node Package Manager
 ....
 ```
