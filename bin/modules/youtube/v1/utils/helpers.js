@@ -3,7 +3,6 @@ const logger = require('../../../../helpers/utils/logger');
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ffmpeg = require('fluent-ffmpeg');
 ffmpeg.setFfmpegPath(ffmpegPath);
-const wrapper = require('../../../../helpers/utils/wrapper');
 
 const getInfo = async (url) => {
   const response = await ytdl.getBasicInfo(url);
@@ -21,7 +20,6 @@ const getStream = async (url, res) => {
       logger.log('getStream', 'Successfully downloaded the stream!');
     }).on('error', (err) => {
       logger.log('getStream', err.message);
-      return wrapper.response(res, 'fail', err);
     });
     return resolve(stream);
   });
@@ -29,14 +27,17 @@ const getStream = async (url, res) => {
 
 const convertToMp3 = async (stream, title, res) => {
   return new Promise((resolve, reject) => {
-    const proc = ffmpeg({ source: stream })
+    ffmpeg({ source: stream })
       .toFormat('mp3')
-      .output(res)
       .on('error', (err) => {
-        return wrapper.response(res, 'fail', err);
+        logger.log('error', err.message);
+        reject(err);
       })
-      .run();
-    return resolve(proc);
+      .on('end', () => {
+        logger.log('convertToMp3', 'Successfully download audio!');
+        resolve();
+      })
+      .pipe(res, { end: true });
   });
 };
 
