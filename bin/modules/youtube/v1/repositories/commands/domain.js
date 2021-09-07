@@ -11,8 +11,8 @@ class Youtube {
         title: info.videoDetails.title,
         author: info.videoDetails.author.name
       }, 'Success', 200);
-    } catch (error) {
-      return wrapper.error({}, 'Failed', 404);
+    } catch (err) {
+      return wrapper.error(err, err.message, 404);
     }
   }
 
@@ -20,7 +20,7 @@ class Youtube {
     const { url } = payload;
     const videoInfo = await this.videoInfo(payload);
     if (videoInfo.err) {
-      return wrapper.error({}, videoInfo.message, 404);
+      return wrapper.response(res, 'fail', videoInfo.err, videoInfo.message);
     }
     const { title } = videoInfo.data;
     const stream = await helper.getStream(url, res);
