@@ -4,7 +4,6 @@ const wrapper = require('../../../../helpers/utils/wrapper');
 const commandHandler = require('../repositories/commands/command_handler');
 const commandModel = require('../repositories/commands/command_modal');
 const validator = require('../utils/validator');
-const fs = require('fs')
 
 const videoInfo = async (req, res) => {
   const payload = req.body;
@@ -27,12 +26,11 @@ const videoInfo = async (req, res) => {
 };
 
 const download = async (req, res) => {
-  console.log('AJ')
-  const {body, query} = req;
+  const { body, query } = req;
   const payload = {
     ...body,
     ...query
-  }
+  };
   const validatePayload = validator.isValidPayload(payload, commandModel.download);
   const postRequest = async (result) => {
     if (result.err) {
@@ -43,12 +41,6 @@ const download = async (req, res) => {
 
   const sendResponse = async (result) => {
     return result;
-    console.log(result)
-    // if (result.err) {
-    //   wrapper.response(res, 'fail', result, result.message);
-    // } else {
-    //   result
-    // }
   };
   sendResponse(await postRequest(validatePayload));
 };

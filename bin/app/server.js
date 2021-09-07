@@ -13,7 +13,7 @@ function AppServer () {
   this.server.serverKey = '';
   this.server.use(restify.plugins.acceptParser(this.server.acceptable));
   this.server.use(restify.plugins.queryParser());
-  this.server.use(restify.plugins.bodyParser({requestBodyOnGet: true}));
+  this.server.use(restify.plugins.bodyParser({ requestBodyOnGet: true }));
   this.server.use(restify.plugins.authorizationParser());
 
   // required for basic auth
@@ -32,11 +32,11 @@ function AppServer () {
   this.server.get('/downloader/youtube/v1/video-info', youtubeHandler.videoInfo);
   this.server.get('/downloader/youtube/v1/download', youtubeHandler.download);
 
-  process.on('SIGINT', function () {
+  process.on('SIGINT', () => {
     // this is only called on ctrl+c, not restart
     process.kill(process.pid, 'SIGINT');
   });
-  process.once('SIGUSR2', function () {
+  process.once('SIGUSR2', () => {
     process.kill(process.pid, 'SIGUSR2');
   });
 }

@@ -1,4 +1,3 @@
-const joi = require('joi');
 const validate = require('validate.js');
 const wrapper = require('../../../../helpers/utils/wrapper');
 const { BadRequestError } = require('../../../../helpers/error');

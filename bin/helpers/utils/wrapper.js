@@ -3,7 +3,6 @@ const {
   ForbiddenError, GatewayTimeoutError, ServiceUnavailableError, UnauthorizedError
 } = require('../error');
 const { ERROR: httpError } = require('../http-status/status_code');
-const fs = require('fs');
 
 const data = (data, description = '', code = 200) => ({
   err: null, message: description, data, code
@@ -75,7 +74,6 @@ const checkErrorCode = (error) => {
     return httpError.CONFLICT;
   }
 };
-
 
 module.exports = {
   data,
