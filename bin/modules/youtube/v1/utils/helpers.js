@@ -1,6 +1,8 @@
 const ytdl = require('ytdl-core');
 const logger = require('../../../../helpers/utils/logger');
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ffmpeg = require('fluent-ffmpeg');
+ffmpeg.setFfmpegPath(ffmpegPath);
 const wrapper = require('../../../../helpers/utils/wrapper');
 
 const getInfo = async (url) => {
