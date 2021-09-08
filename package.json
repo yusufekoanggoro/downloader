@@ -10,8 +10,10 @@
     "lint": "eslint bin",
     "lint:fix": "npm run lint -- --fix"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "heroku"
+  ],
+  "author": "YUJA",
   "license": "ISC",
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
@@ -39,5 +41,8 @@
   },
   "pre-commit": [
     "lint"
-  ]
+  ],
+  "engines": {
+    "node": "14.x"
+  }
 }
