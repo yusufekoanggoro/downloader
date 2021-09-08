@@ -1,5 +1,10 @@
 # Dependency directories
 node_modules/
+npm-debug.log
 
 # dotenv environment variables file
 .env
+
+# Docker
+Dockerfile
+docker-compose.yml

@@ -10,6 +10,10 @@
     "lint": "eslint bin",
     "lint:fix": "npm run lint -- --fix"
   },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
   "keywords": [
     "heroku"
   ],
