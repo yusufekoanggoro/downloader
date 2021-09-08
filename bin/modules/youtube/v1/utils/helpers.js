@@ -31,11 +31,13 @@ const convertToMp3 = async (stream, title, res) => {
       .toFormat('mp3')
       .on('error', (err) => {
         logger.log('error', err.message);
-        reject(err);
       })
       .on('end', () => {
-        logger.log('convertToMp3', 'Successfully download audio!');
+        logger.log('convertToMp3', 'Successfully downloaded the audio!');
         resolve();
+      })
+      .on('close', () => {
+        logger.log('convertToMp3', 'stream closed', 'info');
       })
       .pipe(res, { end: true });
   });

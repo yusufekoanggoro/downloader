@@ -1,15 +1,23 @@
 const wrapper = require('../../../../../helpers/utils/wrapper');
 const ytdl = require('ytdl-core');
 const helper = require('../../utils/helpers');
+const moment = require('moment-timezone');
 
 class Youtube {
   async videoInfo (payload) {
     try {
       const { url } = payload;
-      const info = await ytdl.getBasicInfo(url);
+      const info = await ytdl.getInfo(url);
+
+      const time = moment().startOf('day')
+        .seconds(info.videoDetails.lengthSeconds)
+        .format('HH:mm:ss');
+      const duration = `Duration: ${time}`;
+
       return wrapper.data({
-        title: info.videoDetails.title,
-        author: info.videoDetails.author.name
+        thumbnail: `https://img.youtube.com/vi/${info.videoDetails.videoId}/maxresdefault.jpg`,
+        duration,
+        title: info.videoDetails.title
       }, 'Success', 200);
     } catch (err) {
       return wrapper.error(err, err.message, 404);
