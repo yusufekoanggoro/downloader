@@ -3,11 +3,25 @@ const logger = require('../../../../helpers/utils/logger');
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ffmpeg = require('fluent-ffmpeg');
 ffmpeg.setFfmpegPath(ffmpegPath);
+const youtubedl = require('youtube-dl-exec');
+const wrapper = require('../../../../helpers/utils/wrapper');
 
-const getInfo = async (url) => {
-  const response = await ytdl.getBasicInfo(url);
-  const info = response.videoDetails.title;
-  return info;
+const getVideoInfo = async (url) => {
+  try {
+    const response = await youtubedl(url, {
+      dumpSingleJson: true,
+      noWarnings: true,
+      noCallHome: true,
+      noCheckCertificate: true,
+      preferFreeFormats: true,
+      youtubeSkipDashManifest: true,
+      referer: url
+    });
+    return wrapper.data(response, 'success', 200);
+  } catch (error) {
+    const err = JSON.parse(JSON.stringify(error));
+    return wrapper.error('fail', err.stderr, 500);
+  }
 };
 
 const getStream = async (url, res) => {
@@ -44,7 +58,7 @@ const convertToMp3 = async (stream, title, res) => {
 };
 
 module.exports = {
-  getInfo,
+  getVideoInfo,
   getStream,
   convertToMp3
 };
