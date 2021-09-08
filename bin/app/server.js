@@ -32,7 +32,7 @@ function AppServer () {
   this.server.use(basicAuth.init());
 
   // anonymous can access the end point, place code bellow
-  this.server.get('/downloader/health-check', (req, res) => {
+  this.server.get('/', (req, res) => {
     wrapper.response(res, 'success', wrapper.data('Index'), 'This service is running properly');
   });
 
@@ -41,8 +41,8 @@ function AppServer () {
         Add new route
     ====================
   */
-  this.server.get('/downloader/youtube/v1/video-info', basicAuth.isAuthenticated, youtubeHandler.videoInfo);
-  this.server.get('/downloader/youtube/v1/download', basicAuth.isAuthenticated, youtubeHandler.download);
+  this.server.get('/youtube/v1/video-info', basicAuth.isAuthenticated, youtubeHandler.videoInfo);
+  this.server.get('/youtube/v1/download', basicAuth.isAuthenticated, youtubeHandler.download);
 }
 
 module.exports = AppServer;
