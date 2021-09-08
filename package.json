@@ -25,6 +25,7 @@
     "dotenv": "^10.0.0",
     "fluent-ffmpeg": "^2.1.2",
     "joi": "^17.4.2",
+    "moment-timezone": "^0.5.33",
     "nodemon": "^2.0.12",
     "passport": "^0.4.1",
     "passport-http": "^0.3.0",
