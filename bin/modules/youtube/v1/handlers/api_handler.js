@@ -19,7 +19,7 @@ const videoInfo = async (req, res) => {
     if (result.err) {
       wrapper.response(res, 'fail', result.err, result.message);
     } else {
-      wrapper.response(res, 'success', result, 'success video info', http.OK);
+      wrapper.response(res, 'success', result, 'success get video info', http.OK);
     }
   };
   sendResponse(await postRequest(validatePayload));
