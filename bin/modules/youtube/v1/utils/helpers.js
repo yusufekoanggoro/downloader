@@ -5,6 +5,8 @@ const ffmpeg = require('fluent-ffmpeg');
 ffmpeg.setFfmpegPath(ffmpegPath);
 const youtubedl = require('youtube-dl-exec');
 const wrapper = require('../../../../helpers/utils/wrapper');
+const path = require('path');
+const fs = require('fs');
 
 const getVideoInfo = async (url) => {
   try {
@@ -57,8 +59,22 @@ const convertToMp3 = async (stream, title, res) => {
   });
 };
 
+const checkDownload = async (url, title) => {
+  const reqPath = path.join(__dirname, `../../../../../tmp/${title} BY YUJA.mp3`);
+  const videoReadableStream = ytdl(url, {
+    quality: 'highestaudio',
+    filter: 'audio'
+  });
+  const videoWritableStream = fs.createWriteStream(reqPath);
+  const stream = videoReadableStream.pipe(videoWritableStream);
+  stream.on('finish', () => {
+    logger.log('checkDownload', 'finish', 'info');
+  });
+};
+
 module.exports = {
   getVideoInfo,
   getStream,
-  convertToMp3
+  convertToMp3,
+  checkDownload
 };

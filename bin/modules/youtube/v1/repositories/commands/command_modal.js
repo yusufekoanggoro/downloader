@@ -5,10 +5,21 @@ const videoInfo = joi.object({
 });
 
 const download = joi.object({
+  filename: joi.string().required()
+});
+
+const checkDownload = joi.object({
+  title: joi.string().required(),
   url: joi.string().uri().required()
+});
+
+const deleteFile = joi.object({
+  filename: joi.string().required()
 });
 
 module.exports = {
   videoInfo,
-  download
+  download,
+  checkDownload,
+  deleteFile
 };

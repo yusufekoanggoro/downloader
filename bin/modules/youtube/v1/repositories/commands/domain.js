@@ -1,7 +1,8 @@
 const wrapper = require('../../../../../helpers/utils/wrapper');
 const helper = require('../../utils/helpers');
 const moment = require('moment-timezone');
-
+const fs = require('fs');
+const path = require('path');
 class Youtube {
   async videoInfo (payload) {
     const { url } = payload;
@@ -22,16 +23,32 @@ class Youtube {
   }
 
   async download (payload, res) {
-    const { url } = payload;
-    const videoInfo = await this.videoInfo(payload);
-    if (videoInfo.err) {
-      return wrapper.response(res, 'fail', videoInfo.err, videoInfo.message);
+    const { filename } = payload;
+
+    const reqPath = path.join(__dirname, `../../../../../../tmp/${filename}`);
+    if (fs.existsSync(reqPath)) {
+      const filestream = fs.createReadStream(reqPath);
+      res.setHeader('Content-Disposition', 'attachment; filename=audio.mp3');
+      res.setHeader('Content-Type', 'audio/mpeg');
+      filestream.on('data', () => {
+        // console.log('on data')
+      });
+      filestream.on('end', () => {
+        // console.log("SELESAI")
+      });
+      return filestream.pipe(res);
     }
-    const { title } = videoInfo.data;
-    const stream = await helper.getStream(url, res);
-    res.header('Content-Disposition', 'attachment; filename=' + title + ' by YUJA.mp3');
-    res.header('Content-Type', 'audio/mpeg');
-    return await helper.convertToMp3(stream, title, res);
+    return wrapper.response(res, 'success', '', 'Not Found', 404);
+  }
+
+  async checkDownload (payload) {
+    const { url, title } = payload;
+    helper.checkDownload(url, title);
+    return wrapper.data({ fileName: `${title} BY YUJA.mp3` }, 'Checking Download', 200);
+  }
+
+  async deleteFile (payload) {
+    // const { fileName } = payload;
   }
 }
 
