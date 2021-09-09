@@ -44,6 +44,7 @@ function AppServer () {
   this.server.get('/youtube/v1/video-info', basicAuth.isAuthenticated, youtubeHandler.videoInfo);
   this.server.get('/youtube/v1/download', basicAuth.isAuthenticated, youtubeHandler.download);
   this.server.get('/youtube/v1/check-download', basicAuth.isAuthenticated, youtubeHandler.checkDownload);
+  this.server.del('/youtube/v1/:filename', basicAuth.isAuthenticated, youtubeHandler.deleteFile);
 }
 
 module.exports = AppServer;

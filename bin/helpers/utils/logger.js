@@ -1,21 +1,10 @@
 const winston = require('winston');
+const config = winston.config;
 const st = require('stack-trace');
+const moment = require('moment-timezone');
+moment.tz('Asia/Jakarta');
 
-const logger = new winston.Logger({
-  // // thanks to https://github.com/winstonjs/winston/issues/1135
-  // format: winston.format.combine(
-  //   winston.format.timestamp(),
-  //   winston.format.colorize(),
-  //   winston.format.simple(),
-  //   winston.format.printf((info) => {
-  //     const {
-  //       timestamp, level, message
-  //     } = info;
-
-  //     const ts = timestamp.slice(0, 19).replace('T', ' ');
-  //     return `${ts} [${level}]: ${message} `;
-  //   })
-  // ),
+const myconfig = {
   levels: {
     trace: 9,
     input: 8,
@@ -28,13 +17,34 @@ const logger = new winston.Logger({
     warn: 1,
     error: 0
   },
+  colors: {
+    error: 'red',
+    debug: 'blue',
+    warn: 'yellow',
+    data: 'grey',
+    info: 'green',
+    verbose: 'cyan',
+    silly: 'magenta'
+  }
+};
+
+const logger = new (winston.Logger)({
+  // thanks to https://github.com/winstonjs/winston/issues/1135
   transports: [new winston.transports.Console({
     level: 'info',
     handleExceptions: true,
     json: false,
-    colorize: true
+    colorize: true,
+    timestamp: function () {
+      const dateString = moment().format('YYYY-MM-DD HH:mm:ss');
+      return dateString;
+    },
+    formatter: function (options) {
+      return options.timestamp() + ' [' + config.colorize(options.level, options.level.toLowerCase()) + ']: ' + options.message;
+    }
   })
   ],
+  levels: myconfig.levels,
   exitOnError: false
 });
 

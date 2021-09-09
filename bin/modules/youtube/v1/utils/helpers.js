@@ -5,7 +5,8 @@ const ffmpeg = require('fluent-ffmpeg');
 ffmpeg.setFfmpegPath(ffmpegPath);
 const youtubedl = require('youtube-dl-exec');
 const wrapper = require('../../../../helpers/utils/wrapper');
-const path = require('path')
+const path = require('path');
+const fs = require('fs');
 
 const getVideoInfo = async (url) => {
   try {
@@ -58,37 +59,22 @@ const convertToMp3 = async (stream, title, res) => {
   });
 };
 
-const prepareDownloadMp3 = async (url) => {
-  try {
-    let reqPath = path.join(__dirname, '../../../../../tmp');
-    const response = await youtubedl.raw(url, {
-      format:18
-    }, { cwd: reqPath })
-    // console.log(response)
-    // dumpSingleJson: true,
-    // noWarnings: true,
-    // noCallHome: true,
-    // noCheckCertificate: true,
-    // preferFreeFormats: true,
-    // youtubeSkipDashManifest: true,
-    // referer: 'https://example.com'
-    response.on('info', function(info) {
-      console.log('Download started')
-      console.log('filename: ' + info._filename)
-      console.log('size: ' + info.size)
-    })
-    
-    response.pipe(fs.createWriteStream('myvideo.mp4'))
-    
-  } catch (error) {
-    const err = JSON.parse(JSON.stringify(error));
-    return wrapper.error('fail', err.stderr, 500);
-  }
-}
+const checkDownload = async (url, title) => {
+  const reqPath = path.join(__dirname, `../../../../../tmp/${title} BY YUJA.mp3`);
+  const videoReadableStream = ytdl(url, {
+    quality: 'highestaudio',
+    filter: 'audio'
+  });
+  const videoWritableStream = fs.createWriteStream(reqPath);
+  const stream = videoReadableStream.pipe(videoWritableStream);
+  stream.on('finish', () => {
+    logger.log('checkDownload', 'finish', 'info');
+  });
+};
 
 module.exports = {
   getVideoInfo,
   getStream,
   convertToMp3,
-  prepareDownloadMp3
+  checkDownload
 };

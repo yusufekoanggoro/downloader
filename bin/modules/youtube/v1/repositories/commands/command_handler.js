@@ -18,8 +18,15 @@ const checkDownload = async (payload) => {
   return postCommand(payload);
 };
 
+const deleteFile = async (payload) => {
+  const youtube = new Youtube();
+  const postCommand = async (payload) => youtube.deleteFile(payload);
+  return postCommand(payload);
+};
+
 module.exports = {
   videoInfo,
   download,
-  checkDownload
+  checkDownload,
+  deleteFile
 };
