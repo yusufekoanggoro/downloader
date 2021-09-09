@@ -41,7 +41,28 @@ const download = async (req, res) => {
   sendResponse(await postRequest(validatePayload));
 };
 
+const checkDownload = async (req, res) => {
+  const payload = req.query;
+  const validatePayload = validator.isValidPayload(payload, commandModel.download);
+  const postRequest = async (result) => {
+    if (result.err) {
+      return result;
+    }
+    return commandHandler.checkDownload(result.data);
+  };
+
+  const sendResponse = async (result) => {
+    if (result.err) {
+      wrapper.response(res, 'fail', result.err, result.message);
+    } else {
+      wrapper.response(res, 'success', result, 'check download success', http.OK);
+    }
+  };
+  sendResponse(await postRequest(validatePayload));
+}
+
 module.exports = {
   videoInfo,
-  download
+  download,
+  checkDownload
 };

@@ -33,6 +33,11 @@ class Youtube {
     res.header('Content-Type', 'audio/mpeg');
     return await helper.convertToMp3(stream, title, res);
   }
+
+  async checkDownload (payload) {
+    const { url } = payload;
+    const checkDownload = await helper.prepareDownloadMp3(url)
+  }
 }
 
 module.exports = Youtube;
