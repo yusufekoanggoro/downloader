@@ -4,6 +4,8 @@ const wrapper = require('../helpers/utils/wrapper');
 const basicAuth = require('../auth/basic_auth_helper');
 const youtubeHandler = require('../modules/youtube/v1/handlers/api_handler');
 const corsMiddleware = require('restify-cors-middleware');
+const socketio = require('socket.io');
+const logger = require('../helpers/utils/logger');
 
 function AppServer () {
   this.server = restify.createServer({
@@ -45,6 +47,25 @@ function AppServer () {
   this.server.get('/youtube/v1/download', basicAuth.isAuthenticated, youtubeHandler.download);
   this.server.get('/youtube/v1/check-download', basicAuth.isAuthenticated, youtubeHandler.checkDownload);
   this.server.del('/youtube/v1/:filename', basicAuth.isAuthenticated, youtubeHandler.deleteFile);
+
+  this.socket = socketio(this.server);
+  const users = [];
+  this.socket.on('connection', client => {
+    users.push({
+      id: client.id
+    });
+    logger.log('socket', `${client.id} connected`, 'info');
+
+    client.on('disconnect', () => {
+      for (let i = 0; i < users.length; i++) {
+        if (users[i].id === client.id) {
+          users.splice(i, 1);
+        }
+      }
+      logger.log('socket', `${client.id} disconnect`, 'info');
+      this.socket.emit('exit', users);
+    });
+  });
 }
 
 module.exports = AppServer;
