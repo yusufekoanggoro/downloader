@@ -32,6 +32,7 @@
     "pre-commit": "^1.2.2",
     "restify": "^8.5.1",
     "restify-cors-middleware": "^1.1.1",
+    "socket.io": "^4.2.0",
     "validate.js": "^0.13.1",
     "winston": "^2.4.4",
     "youtube-dl-exec": "^1.2.5",
