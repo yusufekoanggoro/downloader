@@ -13,6 +13,12 @@ function AppServer () {
     version: project.version
   });
 
+  this.socket = socketio(this.server, {
+    cors: {
+      origin: '*'
+    }
+  });
+
   this.server.serverKey = '';
   this.server.use(restify.plugins.acceptParser(this.server.acceptable));
   this.server.use(restify.plugins.queryParser());
@@ -48,7 +54,6 @@ function AppServer () {
   this.server.get('/youtube/v1/check-download', basicAuth.isAuthenticated, youtubeHandler.checkDownload);
   this.server.del('/youtube/v1/:filename', basicAuth.isAuthenticated, youtubeHandler.deleteFile);
 
-  this.socket = socketio(this.server);
   const users = [];
   this.socket.on('connection', client => {
     users.push({
