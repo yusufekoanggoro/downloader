@@ -42,8 +42,8 @@ class Youtube {
   }
 
   async checkDownload (payload) {
-    const { url, title } = payload;
-    helper.checkDownload(url, title);
+    const { title } = payload;
+    helper.checkDownload(payload);
     return wrapper.data({ fileName: `${title} BY YUJA.mp3` }, 'Checking Download', 200);
   }
 

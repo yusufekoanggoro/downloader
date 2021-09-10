@@ -60,7 +60,8 @@ const convertToMp3 = async (stream, title, res) => {
   });
 };
 
-const checkDownload = async (url, title) => {
+const checkDownload = async (payload) => {
+  const { url, title, socketId } = payload;
   const reqPath = path.join(__dirname, `../../../../../tmp/${title} BY YUJA.mp3`);
   const videoReadableStream = ytdl(url, {
     quality: 'highestaudio',
@@ -69,10 +70,8 @@ const checkDownload = async (url, title) => {
   const videoWritableStream = fs.createWriteStream(reqPath);
   const stream = videoReadableStream.pipe(videoWritableStream);
   stream.on('finish', () => {
-    socketio.on('connection', (client) => {
-      socketio.to(client.id).emit('statusCheckDownload', {
-        isLoading: false
-      });
+    socketio.to(socketId).emit('statusCheckDownload', {
+      isLoading: false
     });
     logger.log('checkDownload', 'finish', 'info');
   });
