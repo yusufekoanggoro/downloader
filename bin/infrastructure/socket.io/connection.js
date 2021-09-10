@@ -13,6 +13,7 @@ const socketEvents = (socket) => {
     users.push({
       id: client.id
     });
+
     logger.log('socket', `${client.id} connected`, 'info');
 
     client.on('disconnect', async () => {

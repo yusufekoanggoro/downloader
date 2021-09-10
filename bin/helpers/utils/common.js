@@ -11,6 +11,20 @@ const deleteDirectoryInTmp = async (name) => {
   }
 };
 
+const makeDirectoryInTmp = async (name) => {
+  const dir = path.join(__dirname, `../../../tmp/${name}`);
+  try {
+    if (!await fs.existsSync(dir)) {
+      await fs.mkdirSync(dir, { recursive: true });
+    }
+    return true;
+  } catch (error) {
+    logger.log('delete-directory', error.message, 'error');
+    return false;
+  }
+};
+
 module.exports = {
-  deleteDirectoryInTmp
+  deleteDirectoryInTmp,
+  makeDirectoryInTmp
 };

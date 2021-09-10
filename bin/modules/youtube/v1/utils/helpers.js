@@ -8,6 +8,7 @@ const wrapper = require('../../../../helpers/utils/wrapper');
 const path = require('path');
 const fs = require('fs');
 const socketio = require('../../../../infrastructure/socket.io/connection').getSocket;
+const common = require('../../../../helpers/utils/common');
 
 const getVideoInfo = async (url) => {
   try {
@@ -61,8 +62,9 @@ const convertToMp3 = async (stream, title, res) => {
 };
 
 const checkDownload = async (payload) => {
-  const { url, title, socketId } = payload;
-  const reqPath = path.join(__dirname, `../../../../../tmp/${title} BY YUJA.mp3`);
+  const { url, title, clientId } = payload;
+  await common.makeDirectoryInTmp(clientId);
+  const reqPath = path.join(__dirname, `../../../../../tmp/${clientId}/${title} BY YUJA.mp3`);
   const videoReadableStream = ytdl(url, {
     quality: 'highestaudio',
     filter: 'audio'
@@ -70,7 +72,7 @@ const checkDownload = async (payload) => {
   const videoWritableStream = fs.createWriteStream(reqPath);
   const stream = videoReadableStream.pipe(videoWritableStream);
   stream.on('finish', () => {
-    socketio.to(socketId).emit('statusCheckDownload', {
+    socketio.to(clientId).emit('statusCheckDownload', {
       isLoading: false
     });
     logger.log('checkDownload', 'finish', 'info');

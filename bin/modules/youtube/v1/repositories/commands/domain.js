@@ -3,6 +3,7 @@ const helper = require('../../utils/helpers');
 const moment = require('moment-timezone');
 const fs = require('fs');
 const path = require('path');
+const common = require('../../../../../helpers/utils/common');
 class Youtube {
   async videoInfo (payload) {
     const { url } = payload;
@@ -42,8 +43,11 @@ class Youtube {
   }
 
   async checkDownload (payload) {
-    const { title } = payload;
-    helper.checkDownload(payload);
+    const { title, clientId } = payload;
+    const makeDirectoryInTmp = await common.makeDirectoryInTmp(clientId);
+    if (makeDirectoryInTmp) {
+      helper.checkDownload(payload);
+    }
     return wrapper.data({ fileName: `${title} BY YUJA.mp3` }, 'Checking Download', 200);
   }
 
