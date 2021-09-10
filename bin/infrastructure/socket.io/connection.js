@@ -1,8 +1,10 @@
 const socketio = require('socket.io');
 const logger = require('../../helpers/utils/logger');
 const common = require('../../helpers/utils/common');
+let server;
 
-const init = (server) => {
+const init = (data) => {
+  server = data;
   const socket = getSocket(server);
   socketEvents(socket);
 };
@@ -29,7 +31,7 @@ const socketEvents = (socket) => {
   });
 };
 
-const getSocket = (server) => {
+const getSocket = () => {
   const socket = socketio(server.server, {
     cors: {
       origin: '*'
