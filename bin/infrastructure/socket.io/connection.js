@@ -23,7 +23,7 @@ const socketEvents = (socket) => {
       }
       common.deleteDirectoryInTmp(client.id);
       logger.log('socket', `${client.id} disconnect`, 'info');
-      this.socket.emit('exit', users);
+      socket.emit('exit', users);
     });
   });
 };
