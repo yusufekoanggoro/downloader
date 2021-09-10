@@ -48,7 +48,11 @@ function AppServer () {
   this.server.get('/youtube/v1/check-download', basicAuth.isAuthenticated, youtubeHandler.checkDownload);
   this.server.del('/youtube/v1/:filename', basicAuth.isAuthenticated, youtubeHandler.deleteFile);
 
-  this.socket = socketio(this.server);
+  this.socket = socketio(this.server, {
+    cors: {
+      origin: '*'
+    }
+  });
   const users = [];
   this.socket.on('connection', client => {
     users.push({
