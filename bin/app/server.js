@@ -13,7 +13,7 @@ function AppServer () {
     version: project.version
   });
 
-  this.socket = socketio(this.server, {
+  this.socket = socketio(this.server.server, {
     cors: {
       origin: '*'
     }
