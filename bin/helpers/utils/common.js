@@ -11,6 +11,14 @@ const deleteDirectoryInTmp = async (name) => {
   }
 };
 
+const recursiveDeleteDirectory = async (dir) => {
+  try {
+    await fs.rmdirSync(dir, { recursive: true });
+  } catch (error) {
+    logger.log('delete-directory', `Error while deleting ${dir}.`, 'error');
+  }
+};
+
 const makeDirectoryInTmp = async (name) => {
   const dir = path.join(__dirname, `../../../tmp/${name}`);
   try {
@@ -26,5 +34,6 @@ const makeDirectoryInTmp = async (name) => {
 
 module.exports = {
   deleteDirectoryInTmp,
-  makeDirectoryInTmp
+  makeDirectoryInTmp,
+  recursiveDeleteDirectory
 };

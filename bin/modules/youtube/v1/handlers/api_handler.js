@@ -64,28 +64,8 @@ const checkDownload = async (req, res) => {
   sendResponse(await postRequest(validatePayload));
 };
 
-const deleteFile = async (req, res) => {
-  const payload = req.params;
-  const validatePayload = validator.isValidPayload(payload, commandModel.deleteFile);
-  const postRequest = async (result) => {
-    if (result.err) {
-      return result;
-    }
-    return commandHandler.deleteFile(result.data);
-  };
-
-  const sendResponse = async (result) => {
-    if (result.err) {
-      wrapper.response(res, 'fail', result.err, result.message);
-    } else {
-      wrapper.response(res, 'success', result, 'delete file', http.OK);
-    }
-  };
-  sendResponse(await postRequest(validatePayload));
-};
 module.exports = {
   videoInfo,
   download,
-  checkDownload,
-  deleteFile
+  checkDownload
 };

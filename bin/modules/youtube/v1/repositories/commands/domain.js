@@ -11,7 +11,8 @@ class Youtube {
     if (videoInfo.err) {
       return wrapper.error(true, videoInfo.message, 200);
     }
-    const { title, duration, thumbnail } = videoInfo.data;
+    let { title, duration, thumbnail } = videoInfo.data;
+    title = title.replace(/[^\x00-\x7F]/g, '');
     const time = moment().startOf('day')
       .seconds(duration)
       .format('HH:mm:ss');
@@ -24,18 +25,20 @@ class Youtube {
   }
 
   async download (payload, res) {
-    const { filename } = payload;
+    let { filename, clientId } = payload;
 
-    const reqPath = path.join(__dirname, `../../../../../../tmp/${filename}`);
+    const reqPath = path.join(__dirname, `../../../../../../tmp/${clientId}/${filename}`);
     if (fs.existsSync(reqPath)) {
       const filestream = fs.createReadStream(reqPath);
-      res.setHeader('Content-Disposition', 'attachment; filename=audio.mp3');
+      filename = filename.replace(/[^\x00-\x7F]/g, '');
+
+      res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
       res.setHeader('Content-Type', 'audio/mpeg');
       filestream.on('data', () => {
         // console.log('on data')
       });
       filestream.on('end', () => {
-        // console.log("SELESAI")
+        // common.recursiveDeleteDirectory(reqPath)
       });
       return filestream.pipe(res);
     }
@@ -49,10 +52,6 @@ class Youtube {
       helper.checkDownload(payload);
     }
     return wrapper.data({ fileName: `${title} BY YUJA.mp3` }, 'Checking Download', 200);
-  }
-
-  async deleteFile (payload) {
-    // const { fileName } = payload;
   }
 }
 

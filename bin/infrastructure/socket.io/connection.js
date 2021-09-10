@@ -1,11 +1,14 @@
 const socketio = require('socket.io');
 const logger = require('../../helpers/utils/logger');
 const common = require('../../helpers/utils/common');
-let server;
+let socket;
 
-const init = (data) => {
-  server = data;
-  const socket = getSocket(server);
+const init = (server) => {
+  socket = socketio(server.server, {
+    cors: {
+      origin: '*'
+    }
+  });
   socketEvents(socket);
 };
 
@@ -24,6 +27,7 @@ const socketEvents = (socket) => {
           users.splice(i, 1);
         }
       }
+
       common.deleteDirectoryInTmp(client.id);
       logger.log('socket', `${client.id} disconnect`, 'info');
       socket.emit('exit', users);
@@ -32,11 +36,7 @@ const socketEvents = (socket) => {
 };
 
 const getSocket = () => {
-  const socket = socketio(server.server, {
-    cors: {
-      origin: '*'
-    }
-  });
+  // console.log(socket)
   return socket;
 };
 

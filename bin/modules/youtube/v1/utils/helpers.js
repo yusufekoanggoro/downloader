@@ -7,7 +7,7 @@ const youtubedl = require('youtube-dl-exec');
 const wrapper = require('../../../../helpers/utils/wrapper');
 const path = require('path');
 const fs = require('fs');
-const socketio = require('../../../../infrastructure/socket.io/connection').getSocket;
+const getSocket = require('../../../../infrastructure/socket.io/connection').getSocket;
 const common = require('../../../../helpers/utils/common');
 
 const getVideoInfo = async (url) => {
@@ -72,7 +72,7 @@ const checkDownload = async (payload) => {
   const videoWritableStream = fs.createWriteStream(reqPath);
   const stream = videoReadableStream.pipe(videoWritableStream);
   stream.on('finish', () => {
-    socketio.to(clientId).emit('statusCheckDownload', {
+    getSocket().to(clientId).emit('statusCheckDownload', {
       isLoading: false
     });
     logger.log('checkDownload', 'finish', 'info');

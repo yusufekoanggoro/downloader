@@ -5,6 +5,7 @@ const videoInfo = joi.object({
 });
 
 const download = joi.object({
+  clientId: joi.string().required(),
   filename: joi.string().required()
 });
 
