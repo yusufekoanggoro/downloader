@@ -11,7 +11,6 @@ const download = joi.object({
 
 const checkDownload = joi.object({
   clientId: joi.string().required(),
-  title: joi.string().required(),
   url: joi.string().uri().required()
 });
 

@@ -61,8 +61,8 @@ const convertToMp3 = async (stream, title, res) => {
 };
 
 const checkDownload = async (payload) => {
-  const { url, title, clientId } = payload;
-  const reqPath = path.join(__dirname, `../../../../../tmp/${clientId}/${title} BY YUJA.mp3`);
+  const { url, clientId, filename } = payload;
+  const reqPath = path.join(__dirname, `../../../../../tmp/${clientId}/${filename}.mp3`);
   const videoReadableStream = ytdl(url, {
     quality: 'highestaudio',
     filter: 'audio'

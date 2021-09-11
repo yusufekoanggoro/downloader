@@ -4,6 +4,8 @@ const moment = require('moment-timezone');
 const fs = require('fs');
 const path = require('path');
 const common = require('../../../../../helpers/utils/common');
+const uuid = require('uuid');
+
 class Youtube {
   async videoInfo (payload) {
     const { url } = payload;
@@ -27,7 +29,7 @@ class Youtube {
   async download (payload, res) {
     let { filename, clientId } = payload;
 
-    const reqPath = path.join(__dirname, `../../../../../../tmp/${clientId}/${filename}`);
+    const reqPath = path.join(__dirname, `../../../../../../tmp/${clientId}/${filename}.mp3`);
     if (fs.existsSync(reqPath)) {
       const filestream = fs.createReadStream(reqPath);
       filename = filename.replace(/[^\x00-\x7F]/g, '');
@@ -46,9 +48,9 @@ class Youtube {
   }
 
   async checkDownload (payload) {
-    const { title } = payload;
+    payload.filename = uuid.v1();
     helper.checkDownload(payload);
-    return wrapper.data({ fileName: `${title} BY YUJA.mp3` }, 'Checking Download', 200);
+    return wrapper.data({ filename: `${payload.filename}` }, 'Checking Download', 200);
   }
 }
 
