@@ -1,6 +1,7 @@
 const socketio = require('socket.io');
 const logger = require('../../helpers/utils/logger');
 const common = require('../../helpers/utils/common');
+const path = require('path');
 let socket;
 
 const init = (server) => {
@@ -22,6 +23,12 @@ const socketEvents = (socket) => {
     logger.log('socket', `${client.id} connected`, 'info');
     common.makeDirectoryInTmp(client.id);
 
+    client.on('deleteFile', (msg) => {
+      const { clientId, fileName } = msg;
+      const dir = path.join(__dirname, `../../../tmp/${clientId}/${fileName}.mp3`);
+      common.recursiveDeleteDirectory(dir);
+    });
+
     client.on('disconnect', async () => {
       for (let i = 0; i < users.length; i++) {
         if (users[i].id === client.id) {
@@ -37,7 +44,6 @@ const socketEvents = (socket) => {
 };
 
 const getSocket = () => {
-  // console.log(socket)
   return socket;
 };
 
