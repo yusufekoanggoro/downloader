@@ -18,7 +18,7 @@ const socketEvents = (socket) => {
     users.push({
       id: client.id
     });
-    
+
     logger.log('socket', `${client.id} connected`, 'info');
     common.makeDirectoryInTmp(client.id);
 
