@@ -65,7 +65,7 @@ const checkDownload = async (payload) => {
   const reqPath = path.join(__dirname, `../../../../../tmp/${clientId}/${filename}.mp3`);
   const videoReadableStream = ytdl(url, {
     quality: 'highestaudio',
-    filter: 'audio'
+    filter: 'audioonly'
   });
   const videoWritableStream = fs.createWriteStream(reqPath);
   const stream = videoReadableStream.pipe(videoWritableStream);
