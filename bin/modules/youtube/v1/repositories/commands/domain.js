@@ -38,7 +38,7 @@ class Youtube {
         // console.log('on data')
       });
       filestream.on('end', () => {
-        // common.recursiveDeleteDirectory(reqPath)
+        common.recursiveDeleteDirectory(reqPath);
       });
       return filestream.pipe(res);
     }
