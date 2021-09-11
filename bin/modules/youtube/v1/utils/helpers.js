@@ -76,7 +76,7 @@ const checkDownload = async (payload) => {
     getSocket().to(clientId).emit('statusCheckDownload', {
       isLoading: false
     });
-    logger.log('checkDownload', 'finish', 'info');
+    logger.log('checkDownload', `finish - ${clientId}`, 'info');
   });
 };
 
