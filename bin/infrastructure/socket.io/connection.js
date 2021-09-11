@@ -18,8 +18,9 @@ const socketEvents = (socket) => {
     users.push({
       id: client.id
     });
-
+    
     logger.log('socket', `${client.id} connected`, 'info');
+    common.makeDirectoryInTmp(client.id);
 
     client.on('disconnect', async () => {
       for (let i = 0; i < users.length; i++) {

@@ -46,11 +46,8 @@ class Youtube {
   }
 
   async checkDownload (payload) {
-    const { title, clientId } = payload;
-    const makeDirectoryInTmp = await common.makeDirectoryInTmp(clientId);
-    if (makeDirectoryInTmp) {
-      helper.checkDownload(payload);
-    }
+    const { title } = payload;
+    helper.checkDownload(payload);
     return wrapper.data({ fileName: `${title} BY YUJA.mp3` }, 'Checking Download', 200);
   }
 }
