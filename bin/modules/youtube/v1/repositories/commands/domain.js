@@ -3,7 +3,7 @@ const helper = require('../../utils/helpers');
 const moment = require('moment-timezone');
 const fs = require('fs');
 const path = require('path');
-const common = require('../../../../../helpers/utils/common');
+// const common = require('../../../../../helpers/utils/common');
 const uuid = require('uuid');
 
 class Youtube {
@@ -42,9 +42,9 @@ class Youtube {
       // filestream.on('data', () => {
 
       // });
-      filestream.on('end', () => {
-        common.recursiveDeleteDirectory(reqPath);
-      });
+      // filestream.on('end', () => {
+      // common.recursiveDeleteDirectory(reqPath);
+      // });
 
       return filestream.pipe(res);
     }
