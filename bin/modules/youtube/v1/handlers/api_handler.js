@@ -27,6 +27,7 @@ const videoInfo = async (req, res) => {
 
 const download = async (req, res) => {
   const payload = { ...req.query };
+
   const validatePayload = validator.isValidPayload(payload, commandModel.download);
   const postRequest = async (result) => {
     if (result.err) {
@@ -36,7 +37,11 @@ const download = async (req, res) => {
   };
 
   const sendResponse = async (result) => {
-    return result;
+    if (typeof result.err !== 'undefined') {
+      wrapper.response(res, 'fail', result.err, result.message);
+    } else {
+      return result;
+    }
   };
   sendResponse(await postRequest(validatePayload));
 };

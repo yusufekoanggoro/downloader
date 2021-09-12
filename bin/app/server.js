@@ -3,6 +3,7 @@ const project = require('../../package.json');
 const wrapper = require('../helpers/utils/wrapper');
 const basicAuth = require('../auth/basic_auth_helper');
 const youtubeHandler = require('../modules/youtube/v1/handlers/api_handler');
+const youtubeHandlerV2 = require('../modules/youtube/v2/handlers/api_handler');
 const corsMiddleware = require('restify-cors-middleware');
 const sockets = require('../infrastructure/socket.io/connection');
 
@@ -45,6 +46,7 @@ function AppServer () {
   this.server.get('/youtube/v1/video-info', basicAuth.isAuthenticated, youtubeHandler.videoInfo);
   this.server.post('/youtube/v1/check-download', basicAuth.isAuthenticated, youtubeHandler.checkDownload);
   this.server.get('/youtube/v1/download', basicAuth.isAuthenticated, youtubeHandler.download);
+  this.server.post('/youtube/v2/check-download', basicAuth.isAuthenticated, youtubeHandlerV2.checkDownload);
 
   sockets.init(this.server);
 }
