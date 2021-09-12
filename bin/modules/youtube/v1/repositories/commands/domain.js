@@ -31,17 +31,20 @@ class Youtube {
 
     const reqPath = path.join(__dirname, `../../../../../../tmp/${clientId}/${filename}.mp3`);
     if (fs.existsSync(reqPath)) {
+      const sizeFile = fs.statSync(reqPath).size;
       const filestream = fs.createReadStream(reqPath);
-      filename = filename.replace(/[^\x00-\x7F]/g, '');
 
+      filename = filename.replace(/[^\x00-\x7F]/g, '');
       res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
       res.setHeader('Content-Type', 'audio/mpeg');
+      res.setHeader('Content-Length', sizeFile);
+
       filestream.on('data', () => {
-        // console.log('on data')
       });
       filestream.on('end', () => {
         common.recursiveDeleteDirectory(reqPath);
       });
+
       return filestream.pipe(res);
     }
     return wrapper.response(res, 'success', '', 'Not Found', 404);
