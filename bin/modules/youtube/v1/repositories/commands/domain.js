@@ -39,8 +39,9 @@ class Youtube {
       res.setHeader('Content-Type', 'audio/mpeg');
       res.setHeader('Content-Length', sizeFile);
 
-      filestream.on('data', () => {
-      });
+      // filestream.on('data', () => {
+
+      // });
       filestream.on('end', () => {
         common.recursiveDeleteDirectory(reqPath);
       });
